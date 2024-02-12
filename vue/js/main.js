@@ -42,5 +42,8 @@ let app = new Vue({
         inStock(){
             return this.variants[this.selectedVariant].variantQuantity;
         },
+        sale(){
+            return 'For this product: ' + this.product + ' from the brand: ' + this.brand + ', is now discounted: ' + this.onSale;
+        }
     }
 })
