@@ -23,6 +23,7 @@ Vue.component('product', {
                  @mouseover="updateProduct(index)">
             </div>
             <button v-on:click="addToCart" :disabled="!inStock" :class="{disabledButton: !inStock}">Add to cart</button>
+            <button v-on:click="delFromCart" :disabled="!inStock" :class="{disabledButton: !inStock}">Del from cart</button>
         </div>
     </div>
     `,
@@ -52,6 +53,9 @@ Vue.component('product', {
     methods: {
         addToCart(){
             this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId);
+        },
+        delFromCart(){
+            this.$emit('del-from-cart', this.variants[this.selectedVariant].variantId);
         },
         updateProduct(index){
             this.selectedVariant = index
@@ -102,6 +106,13 @@ let app = new Vue({
     methods:{
         updateCart(id){
             this.cart.push(id);
+        },
+        deleteCart(id){
+            for(let i = this.cart.length-1; i >= 0; i--){
+                if(this.cart[i] == id){
+                    this.cart.splice(i, 1);
+                }
+            }
         }
     }
 })
