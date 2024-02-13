@@ -123,7 +123,13 @@ Vue.component('product-tabs', {
                 </span>
             </ul>
             <div v-show="selectedTab === 'Reviews'">
+                <label for="sorting">Упорядочить по:</label>
+                <select id="sorting" v-model="sorting">
+                    <option>Возрастанию рейтинга</option>
+                    <option>Убыванию рейтинга</option>
+                </select>          
                 <p v-if="!reviews.length">There are no reviews yet.</p>
+                {{ sortReviews() }}
                 <ul>
                     <li v-for="review in reviews">
                         <p>{{ review.name }}</p>
@@ -150,8 +156,35 @@ Vue.component('product-tabs', {
     data(){
         return{
             tabs: ['Reviews', 'Make a Review', 'Shipping', 'Details'],
-            selectedTab: 'Reviews'
+            selectedTab: 'Reviews',
+            sorting: 'Возрастанию рейтинга'
         }
+    },
+    methods: {
+      sortReviews() {
+          if(this.sorting === 'Возрастанию рейтинга'){
+              for(let i = 0; i < this.reviews.length; i++){
+                  for(let j = 0; j < (this.reviews.length)-1; j++){
+                      if(this.reviews[j].rating > this.reviews[j+1].rating){
+                          let test = this.reviews[j];
+                          this.reviews[j] = this.reviews[j+1];
+                          this.reviews[j+1] = test;
+                      }
+                  }
+              }
+          }
+          else if(this.sorting === 'Убыванию рейтинга'){
+              for(let i = 0; i < this.reviews.length; i++){
+                  for(let j = 0; j < (this.reviews.length)-1; j++){
+                      if(this.reviews[j].rating < this.reviews[j+1].rating){
+                          let test = this.reviews[j];
+                          this.reviews[j] = this.reviews[j+1];
+                          this.reviews[j+1] = test;
+                      }
+                  }
+              }
+          }
+      }
     },
     computed: {
         shipping(){
@@ -161,7 +194,7 @@ Vue.component('product-tabs', {
             else{
                 return 2.99;
             }
-        }
+        },
     }
 })
 
