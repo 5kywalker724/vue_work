@@ -2,7 +2,7 @@ Vue.component('todo', {
     template:`
         <div class="product">
             <div class="column">
-                <form @submit.prevent="createCart">
+                <form @submit.prevent="createCard">
                     <p v-if="errors.length">
                         <b>Please correct the following error(s):</b>
                         <ul>
@@ -25,15 +25,17 @@ Vue.component('todo', {
                         <label for="title">Третье задание:</label>
                         <input id="title" v-model="taskThird">
                     </p>
+                    <p>
                         <input type="submit" value="Создать">
                     </p>
                 </form>
                 <p v-if="!column1.length">На данный момент нету заметок!</p>
+                <p v-show="checkColumn1">Достигнут лимит на добавление карточек</p>
                 <div class="card" v-for="(card, index) in column1">
                     <h3>{{ card.title }}</h3>
                     <ul>
                         <li v-for="item in card.tasks">
-                            <input type="checkbox" v-model="item.checked">
+                            <input type="checkbox" v-model="item.checked"">
                             <p>{{item.text}}</p>
                         </li>
                     </ul>
@@ -70,17 +72,19 @@ Vue.component('todo', {
             column1: [],
             column2: [],
             column3: [],
+            checkColumn1: false,
             errors: [],
-            taskTitle: '',
-            taskFirst: '',
-            taskSecond: '',
-            taskThird: '',
-            taskFour: '',
-            taskFive: '',
+            taskTitle: null,
+            taskFirst: null,
+            taskSecond: null,
+            taskThird: null,
+            taskFour: null,
+            taskFive: null,
         }
     },
     methods: {
-        createCart(){
+        createCard(){
+            this.checkColumn1 = false;
             this.errors = [];
             if(this.column1.length < 3){
                 if(this.taskTitle && this.taskFirst && this.taskSecond && this.taskThird){
@@ -105,9 +109,9 @@ Vue.component('todo', {
                 }
             }
             else{
-                alert("Невозможо добавить больше 3-ч заметок в первую колонку!");
+                this.checkColumn1 = true;
             }
-        }
+        },
     }
 })
 
