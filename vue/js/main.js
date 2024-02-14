@@ -47,7 +47,7 @@ Vue.component('todo', {
                     <h3>{{ card.title }}</h3>
                     <ul>
                         <li v-for="item in card.tasks">
-                            <input type="checkbox" v-model="item.checked">
+                            <input type="checkbox" v-model="item.checked" @change="checkCart(card)">
                             <p>{{item.text}}</p>
                         </li>
                     </ul>
@@ -59,10 +59,11 @@ Vue.component('todo', {
                     <h3>{{ card.title }}</h3>
                     <ul>
                         <li v-for="item in card.tasks">
-                            <input type="checkbox" v-model="item.checked">
+                            <input type="checkbox" v-model="item.checked" @change="checkCart(card)">
                             <p>{{item.text}}</p>
                         </li>
                     </ul>
+                    <p v-if="card.complete">Дата и время последнего выполнения: {{ card.lastComplete }}</p>
                 </div>
             </div>
         </div>
@@ -78,8 +79,6 @@ Vue.component('todo', {
             taskFirst: null,
             taskSecond: null,
             taskThird: null,
-            taskFour: null,
-            taskFive: null,
         }
     },
     methods: {
@@ -118,12 +117,32 @@ Vue.component('todo', {
             const completionPercentage = (checkedCount / totalCount) * 100;
 
 
+            if(completionPercentage === 100 && !this.column3.includes(card)){
+                card.complete = true;
+                card.lastComplete = new Date().toLocaleString();
+                if (this.column2.includes(card)) {
+                    this.column2.splice(this.column2.indexOf(card), 1);
+                }
+                this.column3.push(card);
+            }
+            else if(completionPercentage === 100 && this.column3.includes(card)){
+                card.lastComplete = new Date().toLocaleString();
+            }
+            else {
+                card.lastComplete = "";
+            }
+
             if(completionPercentage >= 50 && this.column1.includes(card)){
-                if (this.column2.length < 5) {
+                if(this.column2.length < 5) {
                     this.column1.splice(this.column1.indexOf(card), 1);
                     this.column2.push(card);
                 }
             }
+
+            if(completionPercentage < 100){
+                card.complete = false;
+            }
+
         }
     }
 })
