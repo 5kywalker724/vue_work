@@ -35,7 +35,7 @@ Vue.component('todo', {
                     <h3>{{ card.title }}</h3>
                     <ul>
                         <li v-for="item in card.tasks">
-                            <input type="checkbox" v-model="item.checked"">
+                            <input type="checkbox" v-model="item.checked" @change="checkCart(card)">
                             <p>{{item.text}}</p>
                         </li>
                     </ul>
@@ -112,6 +112,19 @@ Vue.component('todo', {
                 this.checkColumn1 = true;
             }
         },
+        checkCart(card){
+            const checkedCount = card.tasks.filter(item => item.checked).length;
+            const totalCount = card.tasks.length;
+            const completionPercentage = (checkedCount / totalCount) * 100;
+
+
+            if(completionPercentage >= 50 && this.column1.includes(card)){
+                if (this.column2.length < 5) {
+                    this.column1.splice(this.column1.indexOf(card), 1);
+                    this.column2.push(card);
+                }
+            }
+        }
     }
 })
 
