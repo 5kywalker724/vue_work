@@ -29,13 +29,15 @@ Vue.component('todo', {
                         <input type="submit" value="Создать">
                     </p>
                 </form>
+                {{ checkSizeColumn2() }}
                 <p v-if="!column1.length">На данный момент нету заметок!</p>
-                <p v-show="checkColumn1">Достигнут лимит на добавление карточек</p>
+                <p v-show="checkColumn1">Достигнут лимит на добавление карточек!</p>
+                <p v-show="checkColumn2">Вторая колонка переполнена, невозможно перенести карточки!</p>
                 <div class="card" v-for="(card, index) in column1">
                     <h3>{{ card.title }}</h3>
                     <ul>
                         <li v-for="item in card.tasks">
-                            <input type="checkbox" v-model="item.checked" @change="checkCart(card)">
+                            <input type="checkbox" v-model="item.checked" @change="checkCart(card)" :disabled="checkColumn2">
                             <p>{{item.text}}</p>
                         </li>
                     </ul>
@@ -63,7 +65,7 @@ Vue.component('todo', {
                             <p>{{item.text}}</p>
                         </li>
                     </ul>
-                    <p v-if="card.complete">Дата и время последнего выполнения: {{ card.lastComplete }}</p>
+                    <p v-if="card.complete">Выполнение последнего задания карточки: {{ card.lastComplete }}</p>
                 </div>
             </div>
         </div>
@@ -74,6 +76,7 @@ Vue.component('todo', {
             column2: [],
             column3: [],
             checkColumn1: false,
+            checkColumn2: false,
             errors: [],
             taskTitle: null,
             taskFirst: null,
@@ -82,6 +85,14 @@ Vue.component('todo', {
         }
     },
     methods: {
+        checkSizeColumn2(){
+            if(this.column2.length === 5){
+                this.checkColumn2 = true;
+            }
+            else{
+                this.checkColumn2 = false;
+            }
+        },
         createCard(){
             this.checkColumn1 = false;
             this.errors = [];
