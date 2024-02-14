@@ -25,17 +25,15 @@ body {
     text-align: center;
 }
 
-.card{
-    padding: 0;
-    margin: 0;
-    list-style: none;
+.card h3{
     text-align: center;
 }
 
-.card:last-child{
-    padding-bottom: 20px;
+ul li{
+    list-style: none;
+    display: flex;
 }
 
-.card li:not(:last-child){
-    padding-bottom: 10px;
+ul li p{
+    padding-left: 10px;
 }
