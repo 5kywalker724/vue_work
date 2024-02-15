@@ -86,7 +86,7 @@ Vue.component('todo', {
     },
     mounted() {
         if (localStorage.getItem('cards')) {
-            const savedData = JSON.parse(localStorage.getItem('notes'));
+            const savedData = JSON.parse(localStorage.getItem('cards'));
             this.column1 = savedData.column1;
             this.column2 = savedData.column2;
             this.column3 = savedData.column3;
