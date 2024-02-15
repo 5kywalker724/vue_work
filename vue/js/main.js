@@ -84,13 +84,12 @@ Vue.component('todo', {
             taskThird: null,
         }
     },
-    mounted(){
-        if(localStorage.getItem('data')){
-            const savedData = JSON.parse(localStorage.getItem('data'));
+    mounted() {
+        if (localStorage.getItem('cards')) {
+            const savedData = JSON.parse(localStorage.getItem('notes'));
             this.column1 = savedData.column1;
             this.column2 = savedData.column2;
             this.column3 = savedData.column3;
-
         }
     },
     methods: {
@@ -121,9 +120,6 @@ Vue.component('todo', {
                     this.taskSecond = null;
                     this.taskThird = null;
 
-                    localStorage.setItem('data', JSON.stringify({
-                        column1: this.column1
-                    }));
                 }
                 else{
                     if(!this.taskTitle) this.errors.push("Заголовок обязателен.");
@@ -135,6 +131,12 @@ Vue.component('todo', {
             else{
                 this.checkColumn1 = true;
             }
+
+            localStorage.setItem('cards', JSON.stringify({
+                column1: this.column1,
+                column2: this.column2,
+                column3: this.column3,
+            }));
         },
         checkCart(card){
             const checkedCount = card.tasks.filter(item => item.checked).length;
@@ -168,10 +170,10 @@ Vue.component('todo', {
                 card.complete = false;
             }
 
-            localStorage.setItem('data', JSON.stringify({
+            localStorage.setItem('cards', JSON.stringify({
                 column1: this.column1,
                 column2: this.column2,
-                column3: this.column3
+                column3: this.column3,
             }));
 
         }

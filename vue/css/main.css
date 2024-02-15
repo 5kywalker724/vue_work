@@ -37,3 +37,8 @@ ul li{
 ul li p{
     padding-left: 10px;
 }
+
+input[type=submit]{
+    height: 35px;
+    width: 100px;
+}
