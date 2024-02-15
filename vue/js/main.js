@@ -2,33 +2,37 @@ Vue.component('todo', {
     template:`
         <div class="product">
             <div class="column">
-                <form @submit.prevent="createCard">
+                    <button class="showForm" @click="showModal">Создать карточку</button>
                     <p v-if="errors.length">
                         <b>Please correct the following error(s):</b>
                         <ul>
                             <li v-for="error in errors">{{ error }}</li>
                         </ul>
                     </p>
-                     <p>
-                        <label for="title">Заголовок заметки:</label>
-                        <input id="title" v-model="taskTitle" placeholder="Название заголовка">
-                    </p>
-                    <p>
-                        <label for="task1">Первое задание:</label>
-                        <input id="task1" v-model="taskFirst">
-                    </p>
-                    <p>
-                        <label for="title">Второе задание:</label>
-                        <input id="title" v-model="taskSecond">
-                    </p>
-                    <p>
-                        <label for="title">Третье задание:</label>
-                        <input id="title" v-model="taskThird">
-                    </p>
-                    <p>
-                        <input type="submit" value="Создать">
-                    </p>
-                </form>
+                    <div class="modalForm" v-show="modal">
+                        <form @submit.prevent="createCard">
+                            <p>
+                                <label for="title">Заголовок заметки:</label>
+                                <input id="title" v-model="taskTitle" placeholder="Название заголовка">
+                            </p>
+                            <p>
+                                <label for="task1">Первое задание:</label>
+                                <input id="task1" v-model="taskFirst">
+                            </p>
+                            <p>
+                                <label for="title">Второе задание:</label>
+                                <input id="title" v-model="taskSecond">
+                            </p>
+                            <p>
+                                <label for="title">Третье задание:</label>
+                                <input id="title" v-model="taskThird">
+                            </p>
+                            <p>
+                                <input type="submit" value="Создать">
+                            </p>   
+                        </form>
+                        <button class="close" @click="closeModal">Закрыть форму</button>
+                    </div>
                 {{ checkSizeColumn2() }}
                 <p v-if="!column1.length">На данный момент нету заметок!</p>
                 <p v-show="checkColumn1">Достигнут лимит на добавление карточек!</p>
@@ -61,7 +65,7 @@ Vue.component('todo', {
                     <h3>{{ card.title }}</h3>
                     <ul>
                         <li v-for="item in card.tasks">
-                            <input type="checkbox" v-model="item.checked" @change="checkCart(card)">
+                            <input type="checkbox" v-model="item.checked" @change="checkCart(card)" :disabled="disableColumn3">
                             <p>{{item.text}}</p>
                         </li>
                     </ul>
@@ -77,6 +81,8 @@ Vue.component('todo', {
             column3: [],
             checkColumn1: false,
             checkColumn2: false,
+            disableColumn3: true,
+            modal: false,
             errors: [],
             taskTitle: null,
             taskFirst: null,
@@ -93,6 +99,12 @@ Vue.component('todo', {
         }
     },
     methods: {
+        closeModal(){
+            this.modal = false;
+        },
+        showModal(){
+            this.modal = true;
+        },
         checkSizeColumn2(){
             if(this.column2.length === 5){
                 this.checkColumn2 = true;
