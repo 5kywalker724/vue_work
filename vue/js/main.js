@@ -84,6 +84,15 @@ Vue.component('todo', {
             taskThird: null,
         }
     },
+    mounted(){
+        if(localStorage.getItem('data')){
+            const savedData = JSON.parse(localStorage.getItem('data'));
+            this.column1 = savedData.column1;
+            this.column2 = savedData.column2;
+            this.column3 = savedData.column3;
+
+        }
+    },
     methods: {
         checkSizeColumn2(){
             if(this.column2.length === 5){
@@ -106,10 +115,15 @@ Vue.component('todo', {
                             {text: this.taskThird, checked: false},
                         ]
                     });
+
                     this.taskTitle = null;
                     this.taskFirst = null;
                     this.taskSecond = null;
                     this.taskThird = null;
+
+                    localStorage.setItem('data', JSON.stringify({
+                        column1: this.column1
+                    }));
                 }
                 else{
                     if(!this.taskTitle) this.errors.push("Заголовок обязателен.");
@@ -153,6 +167,12 @@ Vue.component('todo', {
             if(completionPercentage < 100){
                 card.complete = false;
             }
+
+            localStorage.setItem('data', JSON.stringify({
+                column1: this.column1,
+                column2: this.column2,
+                column3: this.column3
+            }));
 
         }
     }
