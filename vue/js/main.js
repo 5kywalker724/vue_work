@@ -56,6 +56,27 @@ Vue.component('kanban', {
             cardDeadline: null,
         }
     },
+    methods: {
+        addCard() {
+            this.errors = [];
+            if(this.cardTitle && this.cardDesc && this.cardDeadline){
+                this.column1.push({
+                    title: this.cardTitle,
+                    desc: this.cardDesc,
+                    deadline: this.cardDeadline,
+                });
+
+                this.cardTitle = '';
+                this.cardDesc = '';
+                this.cardDeadline = null;
+            }
+            else{
+                if(!this.cardTitle) this.errors.push("Заголовок обязателен.");
+                if(!this.cardDesc) this.errors.push("Описание обязательно.");
+                if(!this.cardDeadline) this.errors.push("Срок выполнения обязателен.");
+            }
+        }
+    }
 });
 
 
