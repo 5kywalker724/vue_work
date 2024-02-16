@@ -45,7 +45,18 @@ ul li p{
 .buttons{
     display: flex;
     justify-content: space-between;
+    padding: 0px 15px 20px 15px;
+}
+
+.moveButtons{
+    display: flex;
+    justify-content: center;
     padding: 0px 15px 10px 15px;
+}
+
+.moveButton{
+    height: 35px;
+    width: 130px;
 }
 
 .changeCard{
