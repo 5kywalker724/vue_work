@@ -30,6 +30,7 @@ Vue.component('kanban', {
                     <h3>{{ card.title }}</h3>
                     <p>Описание: {{ card.desc }} </p>
                     <p>Срок выполнения: {{ card.deadline }}</p>
+                    <p v-show="card.cardChangeDate">Дата и время последнего редактирования: {{ card.cardChangeDate }}</p>
                     <div class="buttons">
                         <button class="changeCard" @click="showModal">Редактировать</button>
                         <button class="deleteCard">Удалить</button>
@@ -85,6 +86,7 @@ Vue.component('kanban', {
             cardTitleChange: '',
             cardDescChange: '',
             cardDeadlineChange: null,
+            cardChangeDate: null,
         }
     },
     methods: {
@@ -119,10 +121,12 @@ Vue.component('kanban', {
                 this.column1[index].title = this.cardTitleChange;
                 this.column1[index].desc = this.cardDescChange;
                 this.column1[index].deadline = this.cardDeadlineChange;
+                this.column1[index].cardChangeDate = new Date().toLocaleString();
 
                 this.cardTitleChange = '';
                 this.cardDescChange = '';
                 this.cardDeadlineChange = null;
+                this.cardChangeDate = null;
             }
             else{
                 if(!this.cardTitleChange) this.errorsChange.push("Заголовок обязателен.");
