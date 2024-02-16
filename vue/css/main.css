@@ -16,13 +16,17 @@ body {
 }
 
 .column{
-    width: 32%;
+    width: 23%;
     border: 2px solid black;
 }
 
 .column p{
     font-size: 20px;
     text-align: center;
+}
+
+.card{
+    border: 2px solid black;
 }
 
 .card h3{
@@ -38,12 +42,27 @@ ul li p{
     padding-left: 10px;
 }
 
+
+
 input[type=submit]{
     height: 35px;
     width: 100px;
-    background: deepskyblue;
-    color: white;
-    font-size: 13px;
+}
+
+.buttons{
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 15px 10px 15px;
+}
+
+.changeCard{
+    height: 35px;
+    width: 110px;
+}
+
+.deleteCard{
+    height: 35px;
+    width: 100px;
 }
 
 .showForm{
@@ -61,11 +80,6 @@ input[type=submit]{
     left: 29%;
     background: ghostwhite;
     box-shadow: 2px 2px 2px 2px black;
-}
-
-form{
-    position: relative;
-    padding: 135px 0px 0px 0px;
 }
 
 .close{
