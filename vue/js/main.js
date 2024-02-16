@@ -21,7 +21,7 @@ Vue.component('kanban', {
                     </p>   
                 </form>
                  <p v-if="errors.length">
-                        <b>Пожалуйста, исправьте ошибку(оишбки):</b>
+                        <b>Пожалуйста, исправьте ошибку(ошибки):</b>
                         <ul>
                             <li v-for="error in errors">{{ error }}</li>
                         </ul>
@@ -38,18 +38,24 @@ Vue.component('kanban', {
                         <form @submit.prevent="changeCard(index)">
                             <p>
                                 <label for="title">Заголовок:</label>
-                                <input id="title" v-model="cardTitle">
+                                <input id="title" v-model="cardTitleChange">
                             </p>
                             <p>
                                 <label for="task1">Описание:</label>
-                                <textarea id="task1" v-model="cardDesc"></textarea>
+                                <textarea id="task1" v-model="cardDescChange"></textarea>
                             </p>
                             <p>
                                 <label for="title">Срок выполнения:</label>
-                                <input id="title" v-model="cardDeadline" type="date">
+                                <input id="title" v-model="cardDeadlineChange" type="date">
                             </p>
                             <p>
                                 <input class="changeButton" type="submit" value="Применить изменения">
+                            </p>
+                            <p v-if="errorsChange.length">
+                                <b>Пожалуйста, исправьте ошибку(оишбки):</b>
+                                <ul>
+                                    <li v-for="error in errorsChange">{{ error }}</li>
+                                </ul>
                             </p>
                         </form>
                         <button class="close" @click="closeModal">Закрыть форму</button>
@@ -71,13 +77,14 @@ Vue.component('kanban', {
         return{
             column1: [],
             errors: [],
+            errorsChange: [],
             modal: false,
             cardTitle: '',
             cardDesc: '',
             cardDeadline: null,
             cardTitleChange: '',
             cardDescChange: '',
-            cardDeadlineChange: '',
+            cardDeadlineChange: null,
         }
     },
     methods: {
@@ -105,7 +112,24 @@ Vue.component('kanban', {
                 if(!this.cardDesc) this.errors.push("Описание обязательно.");
                 if(!this.cardDeadline) this.errors.push("Срок выполнения обязателен.");
             }
-        }
+        },
+        changeCard(index){
+            this.errorsChange = [];
+            if(this.cardTitleChange && this.cardDescChange && this.cardDeadlineChange){
+                this.column1[index].title = this.cardTitleChange;
+                this.column1[index].desc = this.cardDescChange;
+                this.column1[index].deadline = this.cardDeadlineChange;
+
+                this.cardTitleChange = '';
+                this.cardDescChange = '';
+                this.cardDeadlineChange = null;
+            }
+            else{
+                if(!this.cardTitleChange) this.errorsChange.push("Заголовок обязателен.");
+                if(!this.cardDescChange) this.errorsChange.push("Описание обязательно.");
+                if(!this.cardDeadlineChange) this.errorsChange.push("Срок выполнения обязателен.");
+            }
+        },
     }
 });
 
