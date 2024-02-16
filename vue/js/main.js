@@ -17,7 +17,7 @@ Vue.component('kanban', {
                         <input id="title" v-model="cardDeadline" type="date">
                     </p>
                     <p>
-                        <input type="submit" value="Создать">
+                        <input class="createButton" type="submit" value="Создать">
                     </p>   
                 </form>
                  <p v-if="errors.length">
@@ -31,8 +31,28 @@ Vue.component('kanban', {
                     <p>Описание: {{ card.desc }} </p>
                     <p>Срок выполнения: {{ card.deadline }}</p>
                     <div class="buttons">
-                        <button class="changeCard">Редактировать</button>
+                        <button class="changeCard" @click="showModal">Редактировать</button>
                         <button class="deleteCard">Удалить</button>
+                    </div>
+                    <div class="modalForm" v-show="modal">
+                        <form @submit.prevent="changeCard(index)">
+                            <p>
+                                <label for="title">Заголовок:</label>
+                                <input id="title" v-model="cardTitle">
+                            </p>
+                            <p>
+                                <label for="task1">Описание:</label>
+                                <textarea id="task1" v-model="cardDesc"></textarea>
+                            </p>
+                            <p>
+                                <label for="title">Срок выполнения:</label>
+                                <input id="title" v-model="cardDeadline" type="date">
+                            </p>
+                            <p>
+                                <input class="changeButton" type="submit" value="Применить изменения">
+                            </p>
+                        </form>
+                        <button class="close" @click="closeModal">Закрыть форму</button>
                     </div>
                 </div>
             </div>
@@ -51,12 +71,22 @@ Vue.component('kanban', {
         return{
             column1: [],
             errors: [],
+            modal: false,
             cardTitle: '',
             cardDesc: '',
             cardDeadline: null,
+            cardTitleChange: '',
+            cardDescChange: '',
+            cardDeadlineChange: '',
         }
     },
     methods: {
+        showModal(){
+            this.modal = true;
+        },
+        closeModal(){
+            this.modal = false;
+        },
         addCard() {
             this.errors = [];
             if(this.cardTitle && this.cardDesc && this.cardDeadline){

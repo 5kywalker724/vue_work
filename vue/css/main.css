@@ -42,13 +42,6 @@ ul li p{
     padding-left: 10px;
 }
 
-
-
-input[type=submit]{
-    height: 35px;
-    width: 100px;
-}
-
 .buttons{
     display: flex;
     justify-content: space-between;
@@ -63,6 +56,11 @@ input[type=submit]{
 .deleteCard{
     height: 35px;
     width: 100px;
+}
+
+.createButton{
+    height: 35px;
+    width: 120px;
 }
 
 .showForm{
@@ -80,6 +78,16 @@ input[type=submit]{
     left: 29%;
     background: ghostwhite;
     box-shadow: 2px 2px 2px 2px black;
+}
+
+.modalForm form{
+    position: relative;
+    padding: 135px 0px 0px 0px;
+}
+
+.changeButton{
+    height: 35px;
+    width: 150px;
 }
 
 .close{
