@@ -208,6 +208,7 @@ Vue.component('kanbanColumn2', {
                 <p>Описание: {{ card.desc }} </p>
                 <p>Срок выполнения: {{ card.deadline }}</p>
                 <p v-show="card.changeDate">Дата и время последнего редактирования: {{ card.changeDate }}</p>
+                <p v-show="card.message">Причина переноса в колонку: {{ card.message }}</p>
                 <div class="moveButtons">
                     <button class="changeCard" @click="showModal(index)">Редактировать</button>
                     <button class="moveButton" @click="moveToColumn(index)">Переместить >>></button>
@@ -329,8 +330,8 @@ Vue.component('kanbanColumn3', {
                 <p v-show="card.changeDate">Дата и время последнего редактирования: {{ card.changeDate }}</p>
                 <div class="moveButtons">
                     <button class="changeCard" @click="showModal(index)">Редактировать</button>
-                    <button class="moveButton" @click="moveToPrevColumn(index)"><<< Переместить</button>
                     <button class="moveButton" @click="moveToNextColumn(index)">Переместить >>></button>
+                    <button class="moveButton" @click="showModalMessage(index)"><<< Переместить</button>
                 </div>
                 <div class="modalForm" v-show="modal">
                     <form @submit.prevent="changeCard">
@@ -358,20 +359,50 @@ Vue.component('kanbanColumn3', {
                     </form>
                     <button class="close" @click="closeModal">Закрыть форму</button>
                 </div>
+                <div class="modalForm" v-show="modalMessage">
+                    <form @submit.prevent="moveToPrevColumn">
+                        <p>
+                            <label for="title">Причина перемещения карточки:</label>
+                            <input id="title" v-model="cardMessage">
+                        </p>
+                        <p>
+                            <input class="changeButton" type="submit" value="Применить">
+                        </p>
+                        <p v-if="errorsMessage.length">
+                            <b>Пожалуйста, исправьте ошибку(ошибки):</b>
+                            <ul>
+                                <li v-for="error in errorsMessage">{{ error }}</li>
+                            </ul>
+                        </p>
+                    </form>
+                    <button class="close" @click="closeModalMessage">Закрыть форму</button>
+                </div>
             </div>
         </div>
     `,
     data(){
         return{
             errorsChange: [],
+            errorsMessage: [],
             modal: false,
+            modalMessage: false,
             cardTitleChange: '',
             cardDescChange: '',
             cardDeadlineChange: null,
-            indexCardChange: null
+            cardMessage: '',
+            indexCardChange: null,
+            indexCardMessage: null,
         }
     },
     methods:{
+        showModalMessage(index){
+            this.modalMessage = true;
+            this.indexCardMessage = index;
+        },
+        closeModalMessage(){
+            this.modalMessage = false;
+            this.indexCardMessage = null;
+        },
         showModal(index){
             this.modal = true;
             this.indexCardChange = index;
@@ -421,27 +452,39 @@ Vue.component('kanbanColumn3', {
                 this.column3.splice(index, 1);
             }
         },
-        moveToPrevColumn(index){
-            if(this.column3[index].changeDate){
-                this.column2.push({
-                    title: this.column3[index].title,
-                    desc: this.column3[index].desc,
-                    deadline: this.column3[index].deadline,
-                    cardColor: this.column3[index].cardColor,
-                    changeDate: this.column3[index].changeDate
-                });
+        moveToPrevColumn(){
+            this.errorsMessage = [];
+            if(this.cardMessage){
+                if(this.column3[this.indexCardMessage].changeDate){
+                    this.column2.push({
+                        title: this.column3[this.indexCardMessage].title,
+                        desc: this.column3[this.indexCardMessage].desc,
+                        deadline: this.column3[this.indexCardMessage].deadline,
+                        cardColor: this.column3[this.indexCardMessage].cardColor,
+                        changeDate: this.column3[this.indexCardMessage].changeDate,
+                        message: this.cardMessage
+                    });
 
-                this.column3.splice(index, 1);
+                    this.cardMessage = '';
+
+                    this.column3.splice(this.indexCardMessage, 1);
+                }
+                else{
+                    this.column2.push({
+                        title: this.column3[this.indexCardMessage].title,
+                        desc: this.column3[this.indexCardMessage].desc,
+                        deadline: this.column3[this.indexCardMessage].deadline,
+                        cardColor: this.column3[this.indexCardMessage].cardColor,
+                        message: this.cardMessage
+                    });
+
+                    this.cardMessage = '';
+
+                    this.column3.splice(this.indexCardMessage, 1);
+                }
             }
             else{
-                this.column2.push({
-                    title: this.column3[index].title,
-                    desc: this.column3[index].desc,
-                    deadline: this.column3[index].deadline,
-                    cardColor: this.column3[index].cardColor,
-                });
-
-                this.column3.splice(index, 1);
+                if(!this.cardMessage) this.errorsMessage.push("Причина обязательна.");
             }
         },
     }
