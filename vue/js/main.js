@@ -33,7 +33,7 @@ Vue.component('kanban', {
                     <p v-show="card.changeDate">Дата и время последнего редактирования: {{ card.changeDate }}</p>
                     <div class="buttons">
                         <button class="changeCard" @click="showModal">Редактировать</button>
-                        <button class="deleteCard">Удалить</button>
+                        <button class="deleteCard" @click="deleteCard(card)">Удалить</button>
                     </div>
                     <div class="moveButtons">
                         <button class="moveButton" @click="moveToColumn(index)">Переместить >>></button>
@@ -75,6 +75,7 @@ Vue.component('kanban', {
             column2: [],
             errors: [],
             errorsChange: [],
+            id: 0,
             modal: false,
             cardTitle: '',
             cardDesc: '',
@@ -94,7 +95,9 @@ Vue.component('kanban', {
         addCard() {
             this.errors = [];
             if(this.cardTitle && this.cardDesc && this.cardDeadline){
+                this.id++
                 this.column1.push({
+                    id: this.id,
                     title: this.cardTitle,
                     desc: this.cardDesc,
                     deadline: this.cardDeadline,
@@ -149,6 +152,11 @@ Vue.component('kanban', {
 
                 this.column1.splice(index, 1);
             }
+        },
+        deleteCard(card){
+            let indexCard = this.column1.indexOf(card.id);
+
+            this.column1.splice(indexCard, 1);
         }
     }
 });
