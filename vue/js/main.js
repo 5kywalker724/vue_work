@@ -68,6 +68,7 @@ Vue.component('kanban', {
             </div>
             <kanbanColumn2 :column2="column2" :column3="column3"></kanbanColumn2>
             <kanbanColumn3 :column2="column2" :column3="column3" :column4="column4"></kanbanColumn3>
+            <kanbanColumn4 :column4="column4"></kanbanColumn4>
         </div>
     `,
     data(){
@@ -379,10 +380,10 @@ Vue.component('kanbanColumn3', {
                 this.column3.splice(index, 1);
             }
             else{
-                this.column3.push({
-                    title: this.column4[index].title,
-                    desc: this.column4[index].desc,
-                    deadline: this.column4[index].deadline
+                this.column4.push({
+                    title: this.column3[index].title,
+                    desc: this.column3[index].desc,
+                    deadline: this.column3[index].deadline
                 });
 
                 this.column3.splice(index, 1);
@@ -410,6 +411,31 @@ Vue.component('kanbanColumn3', {
             }
         },
     }
+})
+
+Vue.component('kanbanColumn4', {
+    props: {
+        column4: {
+            type: Array,
+            required: true
+        }
+    },
+    template: `
+        <div class="column">
+            <h3 class="title">Выполненные задачи</h3>
+            <div class="card" v-for="(card, index) in column4">
+                <h3>{{ card.title }}</h3>
+                <p>Описание: {{ card.desc }} </p>
+                <p>Срок выполнения: {{ card.deadline }}</p>
+                <p v-show="card.changeDate">Дата и время последнего редактирования: {{ card.changeDate }}</p>
+            </div>
+        </div>
+    `,
+    data(){
+        return{
+            cardColor: true,
+        }
+    },
 })
 
 

@@ -111,3 +111,11 @@ ul li p{
     height: 35px;
     width: 120px;
 }
+
+.greenCard{
+    background-color: #3ce83c;
+}
+
+.redCard{
+    background-color: #ff3131;
+}
