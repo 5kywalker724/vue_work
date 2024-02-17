@@ -101,13 +101,34 @@ Vue.component('kanban', {
             this.errors = [];
             if(this.cardTitle && this.cardDesc && this.cardDeadline){
                 this.id++
-                this.column1.push({
-                    id: this.id,
-                    title: this.cardTitle,
-                    desc: this.cardDesc,
-                    deadline: this.cardDeadline,
-                    changeDate: null,
-                });
+
+                let checkDeadline = new Date();
+                let checkYear = checkDeadline.getFullYear();
+                let checkMonth = checkDeadline.getMonth() + 1;
+                let checkDay = checkDeadline.getDate();
+
+                let check = checkYear + "-" + "0" + checkMonth + "-" + checkDay;
+
+                if(this.cardDeadline > check){
+                    this.column1.push({
+                        id: this.id,
+                        title: this.cardTitle,
+                        desc: this.cardDesc,
+                        deadline: this.cardDeadline,
+                        cardColor: false,
+                        changeDate: null,
+                    });
+                }
+                else{
+                    this.column1.push({
+                        id: this.id,
+                        title: this.cardTitle,
+                        desc: this.cardDesc,
+                        deadline: this.cardDeadline,
+                        cardColor: true,
+                        changeDate: null,
+                    });
+                }
 
                 this.cardTitle = '';
                 this.cardDesc = '';
@@ -143,6 +164,7 @@ Vue.component('kanban', {
                     title: this.column1[index].title,
                     desc: this.column1[index].desc,
                     deadline: this.column1[index].deadline,
+                    cardColor: this.column1[index].cardColor,
                     changeDate: this.column1[index].changeDate
                 });
 
@@ -152,7 +174,8 @@ Vue.component('kanban', {
                 this.column2.push({
                     title: this.column1[index].title,
                     desc: this.column1[index].desc,
-                    deadline: this.column1[index].deadline
+                    deadline: this.column1[index].deadline,
+                    cardColor: this.column1[index].cardColor,
                 });
 
                 this.column1.splice(index, 1);
@@ -261,6 +284,7 @@ Vue.component('kanbanColumn2', {
                     title: this.column2[index].title,
                     desc: this.column2[index].desc,
                     deadline: this.column2[index].deadline,
+                    cardColor: this.column2[index].cardColor,
                     changeDate: this.column2[index].changeDate
                 });
 
@@ -270,7 +294,8 @@ Vue.component('kanbanColumn2', {
                 this.column3.push({
                     title: this.column2[index].title,
                     desc: this.column2[index].desc,
-                    deadline: this.column2[index].deadline
+                    deadline: this.column2[index].deadline,
+                    cardColor: this.column2[index].cardColor,
                 });
 
                 this.column2.splice(index, 1);
@@ -379,6 +404,7 @@ Vue.component('kanbanColumn3', {
                     title: this.column3[index].title,
                     desc: this.column3[index].desc,
                     deadline: this.column3[index].deadline,
+                    cardColor: this.column3[index].cardColor,
                     changeDate: this.column3[index].changeDate
                 });
 
@@ -388,7 +414,8 @@ Vue.component('kanbanColumn3', {
                 this.column4.push({
                     title: this.column3[index].title,
                     desc: this.column3[index].desc,
-                    deadline: this.column3[index].deadline
+                    deadline: this.column3[index].deadline,
+                    cardColor: this.column3[index].cardColor
                 });
 
                 this.column3.splice(index, 1);
@@ -400,6 +427,7 @@ Vue.component('kanbanColumn3', {
                     title: this.column3[index].title,
                     desc: this.column3[index].desc,
                     deadline: this.column3[index].deadline,
+                    cardColor: this.column3[index].cardColor,
                     changeDate: this.column3[index].changeDate
                 });
 
@@ -409,7 +437,8 @@ Vue.component('kanbanColumn3', {
                 this.column2.push({
                     title: this.column3[index].title,
                     desc: this.column3[index].desc,
-                    deadline: this.column3[index].deadline
+                    deadline: this.column3[index].deadline,
+                    cardColor: this.column3[index].cardColor,
                 });
 
                 this.column3.splice(index, 1);
@@ -428,8 +457,7 @@ Vue.component('kanbanColumn4', {
     template: `
         <div class="column">
             <h3 class="title">Выполненные задачи</h3>
-            <div class="card greenCard" v-for="(card, index) in column4" :class="{redCard: !cardColor}">
-                {{ checkDeadline(card) }}
+            <div class="card greenCard" v-for="(card, index) in column4" :class="{redCard: !card.cardColor}">
                 <h3>{{ card.title }}</h3>
                 <p>Описание: {{ card.desc }} </p>
                 <p>Срок выполнения: {{ card.deadline }}</p>
@@ -437,28 +465,6 @@ Vue.component('kanbanColumn4', {
             </div>
         </div>
     `,
-    data(){
-        return{
-            cardColor: true,
-        }
-    },
-    methods: {
-        checkDeadline(card){
-            const checkDeadline = new Date();
-            const checkYear = checkDeadline.getFullYear();
-            const checkMonth = checkDeadline.getMonth() + 1;
-            const checkDay = checkDeadline.getDate();
-
-            const check = checkYear + "-" + "0" + checkMonth + "-" + checkDay;
-
-            if(card.deadline > check){
-                this.cardColor = false;
-            }
-            else{
-                this.cardColor = true;
-            }
-        }
-    }
 })
 
 
