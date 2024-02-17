@@ -1,7 +1,7 @@
 Vue.component('kanban', {
     template: `
         <div class="product">
-            <div class="column">
+            <div class="column column1">
                 <h3 class="title">Запланированные задачи</h3>
                 <form @submit.prevent="addCard">
                     <p>
@@ -31,15 +31,13 @@ Vue.component('kanban', {
                     <p>Описание: {{ card.desc }} </p>
                     <p>Срок выполнения: {{ card.deadline }}</p>
                     <p v-show="card.changeDate">Дата и время последнего редактирования: {{ card.changeDate }}</p>
-                    <div class="buttons">
-                        <button class="changeCard" @click="showModal">Редактировать</button>
-                        <button class="deleteCard" @click="deleteCard(card)">Удалить</button>
-                    </div>
                     <div class="moveButtons">
+                        <button class="changeCard" @click="showModal(index)">Редактировать</button>
+                        <button class="deleteCard" @click="deleteCard(card)">Удалить</button>
                         <button class="moveButton" @click="moveToColumn(index)">Переместить >>></button>
                     </div>
                     <div class="modalForm" v-show="modal">
-                        <form @submit.prevent="changeCard(index)">
+                        <form @submit.prevent="changeCard">
                             <p>
                                 <label for="title">Заголовок:</label>
                                 <input id="title" v-model="cardTitleChange">
@@ -87,14 +85,17 @@ Vue.component('kanban', {
             cardTitleChange: '',
             cardDescChange: '',
             cardDeadlineChange: null,
+            indexCardChange: null,
         }
     },
     methods: {
-        showModal(){
+        showModal(index){
             this.modal = true;
+            this.indexCardChange = index;
         },
         closeModal(){
             this.modal = false;
+            this.indexCardChange = null;
         },
         addCard() {
             this.errors = [];
@@ -118,13 +119,13 @@ Vue.component('kanban', {
                 if(!this.cardDeadline) this.errors.push("Срок выполнения обязателен.");
             }
         },
-        changeCard(index){
+        changeCard(){
             this.errorsChange = [];
             if(this.cardTitleChange && this.cardDescChange && this.cardDeadlineChange){
-                this.column1[index].title = this.cardTitleChange;
-                this.column1[index].desc = this.cardDescChange;
-                this.column1[index].deadline = this.cardDeadlineChange;
-                this.column1[index].changeDate = new Date().toLocaleString();
+                this.column1[this.indexCardChange].title = this.cardTitleChange;
+                this.column1[this.indexCardChange].desc = this.cardDescChange;
+                this.column1[this.indexCardChange].deadline = this.cardDeadlineChange;
+                this.column1[this.indexCardChange].changeDate = new Date().toLocaleString();
 
                 this.cardTitleChange = '';
                 this.cardDescChange = '';
@@ -184,12 +185,12 @@ Vue.component('kanbanColumn2', {
                 <p>Описание: {{ card.desc }} </p>
                 <p>Срок выполнения: {{ card.deadline }}</p>
                 <p v-show="card.changeDate">Дата и время последнего редактирования: {{ card.changeDate }}</p>
-                <div class="buttons">
-                    <button class="changeCard" @click="showModal">Редактировать</button>
+                <div class="moveButtons">
+                    <button class="changeCard" @click="showModal(index)">Редактировать</button>
                     <button class="moveButton" @click="moveToColumn(index)">Переместить >>></button>
                 </div>
                 <div class="modalForm" v-show="modal">
-                    <form @submit.prevent="changeCard(index)">
+                    <form @submit.prevent="changeCard">
                         <p>
                             <label for="title">Заголовок:</label>
                             <input id="title" v-model="cardTitleChange">
@@ -224,22 +225,25 @@ Vue.component('kanbanColumn2', {
             cardTitleChange: '',
             cardDescChange: '',
             cardDeadlineChange: null,
+            indexCardChange: null,
         }
     },
     methods:{
-        showModal(){
+        showModal(index){
             this.modal = true;
+            this.indexCardChange = index;
         },
         closeModal(){
             this.modal = false;
+            this.indexCardChange = null;
         },
-        changeCard(index){
+        changeCard(){
             this.errorsChange = [];
             if(this.cardTitleChange && this.cardDescChange && this.cardDeadlineChange){
-                this.column2[index].title = this.cardTitleChange;
-                this.column2[index].desc = this.cardDescChange;
-                this.column2[index].deadline = this.cardDeadlineChange;
-                this.column2[index].changeDate = new Date().toLocaleString();
+                this.column2[this.indexCardChange].title = this.cardTitleChange;
+                this.column2[this.indexCardChange].desc = this.cardDescChange;
+                this.column2[this.indexCardChange].deadline = this.cardDeadlineChange;
+                this.column2[this.indexCardChange].changeDate = new Date().toLocaleString();
 
                 this.cardTitleChange = '';
                 this.cardDescChange = '';
@@ -299,14 +303,12 @@ Vue.component('kanbanColumn3', {
                 <p>Срок выполнения: {{ card.deadline }}</p>
                 <p v-show="card.changeDate">Дата и время последнего редактирования: {{ card.changeDate }}</p>
                 <div class="moveButtons">
-                    <button class="changeCard" @click="showModal">Редактировать</button>
-                </div>
-                <div class="buttons">
+                    <button class="changeCard" @click="showModal(index)">Редактировать</button>
                     <button class="moveButton" @click="moveToPrevColumn(index)"><<< Переместить</button>
                     <button class="moveButton" @click="moveToNextColumn(index)">Переместить >>></button>
                 </div>
                 <div class="modalForm" v-show="modal">
-                    <form @submit.prevent="changeCard(index)">
+                    <form @submit.prevent="changeCard">
                         <p>
                             <label for="title">Заголовок:</label>
                             <input id="title" v-model="cardTitleChange">
@@ -341,22 +343,25 @@ Vue.component('kanbanColumn3', {
             cardTitleChange: '',
             cardDescChange: '',
             cardDeadlineChange: null,
+            indexCardChange: null
         }
     },
     methods:{
-        showModal(){
+        showModal(index){
             this.modal = true;
+            this.indexCardChange = index;
         },
         closeModal(){
             this.modal = false;
+            this.indexCardChange = null;
         },
-        changeCard(index){
+        changeCard(){
             this.errorsChange = [];
             if(this.cardTitleChange && this.cardDescChange && this.cardDeadlineChange){
-                this.column3[index].title = this.cardTitleChange;
-                this.column3[index].desc = this.cardDescChange;
-                this.column3[index].deadline = this.cardDeadlineChange;
-                this.column3[index].changeDate = new Date().toLocaleString();
+                this.column3[this.indexCardChange].title = this.cardTitleChange;
+                this.column3[this.indexCardChange].desc = this.cardDescChange;
+                this.column3[this.indexCardChange].deadline = this.cardDeadlineChange;
+                this.column3[this.indexCardChange].changeDate = new Date().toLocaleString();
 
                 this.cardTitleChange = '';
                 this.cardDescChange = '';

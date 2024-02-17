@@ -6,18 +6,28 @@ body {
 
 .title{
     text-align: center;
+    padding: 10px 0 10px 0;
+    margin: 0 auto;
+    flex: 0 1 100%;
 }
 
 .product {
     display: flex;
     align-items: stretch;
     justify-content: space-between;
-    padding: 1rem;
+    padding: 0 10px 0 10px
 }
 
 .column{
     width: 23%;
     border: 2px solid black;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.column1 form{
+    flex: 0 1 100%;
 }
 
 .column p{
@@ -26,8 +36,14 @@ body {
 }
 
 .card{
-    border: 2px solid black;
+    box-sizing: border-box;
+    border: 1px solid black;
+    flex: 0 1 49%;
 }
+
+/*.card:not(:last-child){*/
+/*    margin-bottom: 8px;*/
+/*}*/
 
 .card h3{
     text-align: center;
@@ -50,13 +66,18 @@ ul li p{
 
 .moveButtons{
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     padding: 0px 15px 10px 15px;
+}
+
+.moveButtons button:not(:last-child){
+    margin-bottom: 10px;
 }
 
 .moveButton{
     height: 35px;
-    width: 130px;
+    width: 120px;
 }
 
 .changeCard{
