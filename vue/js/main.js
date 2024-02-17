@@ -423,7 +423,8 @@ Vue.component('kanbanColumn4', {
     template: `
         <div class="column">
             <h3 class="title">Выполненные задачи</h3>
-            <div class="card" v-for="(card, index) in column4">
+            <div class="card greenCard" v-for="(card, index) in column4" :class="{redCard: !cardColor}">
+                {{ checkDeadline(card) }}
                 <h3>{{ card.title }}</h3>
                 <p>Описание: {{ card.desc }} </p>
                 <p>Срок выполнения: {{ card.deadline }}</p>
@@ -436,6 +437,23 @@ Vue.component('kanbanColumn4', {
             cardColor: true,
         }
     },
+    methods: {
+        checkDeadline(card){
+            const checkDeadline = new Date();
+            const checkYear = checkDeadline.getFullYear();
+            const checkMonth = checkDeadline.getMonth() + 1;
+            const checkDay = checkDeadline.getDate();
+
+            const check = checkYear + "-" + "0" + checkMonth + "-" + checkDay;
+
+            if(card.deadline > check){
+                this.cardColor = false;
+            }
+            else{
+                this.cardColor = true;
+            }
+        }
+    }
 })
 
 
