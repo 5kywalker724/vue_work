@@ -151,6 +151,7 @@ Vue.component('kanban', {
                 this.cardTitleChange = '';
                 this.cardDescChange = '';
                 this.cardDeadlineChange = null;
+                this.modal = false;
             }
             else{
                 if(!this.cardTitleChange) this.errorsChange.push("Заголовок обязателен.");
@@ -272,6 +273,7 @@ Vue.component('kanbanColumn2', {
                 this.cardTitleChange = '';
                 this.cardDescChange = '';
                 this.cardDeadlineChange = null;
+                this.modal = false;
             }
             else{
                 if(!this.cardTitleChange) this.errorsChange.push("Заголовок обязателен.");
@@ -422,6 +424,7 @@ Vue.component('kanbanColumn3', {
                 this.cardTitleChange = '';
                 this.cardDescChange = '';
                 this.cardDeadlineChange = null;
+                this.modal = false;
             }
             else{
                 if(!this.cardTitleChange) this.errorsChange.push("Заголовок обязателен.");
@@ -466,6 +469,7 @@ Vue.component('kanbanColumn3', {
                     });
 
                     this.cardMessage = '';
+                    this.modalMessage = null;
 
                     this.column3.splice(this.indexCardMessage, 1);
                 }
@@ -479,6 +483,7 @@ Vue.component('kanbanColumn3', {
                     });
 
                     this.cardMessage = '';
+                    this.modalMessage = null;
 
                     this.column3.splice(this.indexCardMessage, 1);
                 }
