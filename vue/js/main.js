@@ -109,7 +109,7 @@ Vue.component('kanban', {
 
                 let check = checkYear + "-" + "0" + checkMonth + "-" + checkDay;
 
-                if(this.cardDeadline > check){
+                if(this.cardDeadline < check){
                     this.column1.push({
                         id: this.id,
                         title: this.cardTitle,
